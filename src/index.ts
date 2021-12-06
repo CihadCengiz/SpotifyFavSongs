@@ -1,23 +1,54 @@
 import express, { Application } from "express";
-import * as dotenv from "dotenv";
+// import * as dotenv from "dotenv";
+import "dotenv/config";
 import SpotifyWebApi from "spotify-web-api-node";
 import lyricsFinder from "lyrics-finder";
 import bodyParser from "body-parser";
 import path from "path";
+import "module-alias/register";
 import sequelize from "./api/database/db.config";
 import Favorites from "./api/model/Favorites";
+import accessEnv from "#root/helpers/accessEnv";
+import "#root/db/connection";
+// import "#root/server/startServer";
+import { ApolloServer } from "apollo-server-express";
+import resolvers from "#root/graphql/resolvers";
+import typeDefs from "#root/graphql/typeDefs";
+import cors from "cors";
 
+const PORT = accessEnv("PORT", 3001);
+// const PORT = 3001;
+
+const app: Application = express();
 const buildPath = path.join(__dirname, "build");
 
-dotenv.config();
-const PORT = process.env.PORT || 3001;
+// const PORT = process.env.PORT || 3001;
+// dotenv.config();
 
 sequelize.sync().then(() => console.log("db is ready"));
 
-const app: Application = express();
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(buildPath));
+app.use(cors({
+    origin: (origin, cb) => cb(null, true),
+    credentials: true,
+    preflightContinue: true,
+    exposedHeaders: [
+      "Access-Control-Allow-Headers",
+      "Access-Control-Allow-Origin, Origin, X-Requested-With, Content-Type, Accept",
+      "X-Password-Expired"
+    ],
+    optionsSuccessStatus: 200
+  })
+);
+
+async function startServer() {
+  const apolloServer = new ApolloServer({ resolvers, typeDefs});
+  await apolloServer.start();
+  apolloServer.applyMiddleware({ app, path: "/graphql" });
+}
+startServer();
 
 app.post("/refresh", (req, res) => {
   const refreshToken = req.body.refreshToken;
@@ -104,9 +135,9 @@ app.get("/api/favorites", async (req, res) => {
 // });
 
 try {
-  app.listen(PORT, () => {
+  app.listen(PORT, "0.0.0.0", () => {
     console.log(`Listening on port:${PORT}`);
   });
 } catch (error) {
-  console.log(`Error occured: ${error.message}`);
+  if (error instanceof Error) console.log(`Error occured: ${error.message}`);
 }

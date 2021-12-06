@@ -1,9 +1,11 @@
 import {Sequelize} from "sequelize";
-import * as dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
+import "module-alias/register";
+import accessEnv from "#root/helpers/accessEnv";
 
+const CONNECTION_STRING = accessEnv("CONNECTION_STRING");
 
-const sequelize = new Sequelize(process.env.CONNECTION_STRING, {
+const sequelize = new Sequelize(CONNECTION_STRING, {
     dialect: "postgres",
     protocol: "postgres",
     dialectOptions: {
