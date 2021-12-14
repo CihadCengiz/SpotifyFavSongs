@@ -7,7 +7,7 @@ import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "
     paranoid: true,
     tableName: "users"
 })
-export class User extends Model<User> {
+export class User extends Model {
     @Column({
         allowNull: false,
         autoIncrement: true,
@@ -34,7 +34,7 @@ export class User extends Model<User> {
     paranoid: true,
     tableName: "favorites"
 })
-export class Favorite extends Model<Favorite> {
+export class Favorite extends Model {
     @Column({
         allowNull: false,
         autoIncrement: true,
