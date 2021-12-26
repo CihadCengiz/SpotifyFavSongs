@@ -17,13 +17,12 @@ import typeDefs from "#root/graphql/typeDefs";
 import cors from "cors";
 
 const PORT = accessEnv("PORT", 3001);
-// const PORT = 3001;
+const REDIRECT_URI = accessEnv("REDIRECT_URI");
+const CLIENT_ID = accessEnv("CLIENT_ID");
+const CLIENT_SECRET = accessEnv("CLIENT_SECRET");
 
 const app: Application = express();
 const buildPath = path.join(__dirname, "build");
-
-// const PORT = process.env.PORT || 3001;
-// dotenv.config();
 
 sequelize.sync().then(() => console.log("db is ready"));
 
@@ -53,9 +52,9 @@ startServer();
 app.post("/refresh", (req, res) => {
   const refreshToken = req.body.refreshToken;
   const spotifyApi = new SpotifyWebApi({
-    redirectUri: process.env.REDIRECT_URI,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
+    redirectUri: REDIRECT_URI,
+    clientId: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
     refreshToken,
   });
 
@@ -75,9 +74,9 @@ app.post("/refresh", (req, res) => {
 app.post("/login", (req, res) => {
   const code = req.body.code;
   const spotifyApi = new SpotifyWebApi({
-    redirectUri: process.env.REDIRECT_URI,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
+    redirectUri: REDIRECT_URI,
+    clientId: CLIENT_ID,
+    clientSecret: CLIENT_SECRET,
   });
 
   spotifyApi

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -10,14 +11,14 @@ import React = require("react");
 import { BASE_API_URL } from "./Constants";
 
 const spotifyApi = new SpotifyWebApi({
-  cliendId: "be9b18b908064fafa6daf43e1a490689",
+  clientId: "be9b18b908064fafa6daf43e1a490689",
 });
 
 export default function Dashboard({ code }) {
   const accessToken = useAuth(code);
   const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [playingTrack, setPlayingTrack] = useState();
+  const [searchResults, setSearchResults] = useState([] as any);
+  const [playingTrack, setPlayingTrack] = useState(null as any);
   const [lyrics, setLyrics] = useState("");
 
   function chooseTrack(track) {
@@ -72,7 +73,9 @@ export default function Dashboard({ code }) {
       );
     });
 
-    return () => (cancel = true);
+    return () => {
+      cancel = true;
+    };
   }, [search, accessToken]);
 
   return (

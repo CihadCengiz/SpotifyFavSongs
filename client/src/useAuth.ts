@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { BASE_API_URL } from "./Constants";
@@ -16,10 +17,10 @@ export default function useAuth(code) {
         setAccessToken(res.data.accessToken);
         setRefreshToken(res.data.refreshToken);
         setExpiresIn(res.data.expiresIn);
-        window.history.pushState({}, null, "/");
+        window.history.pushState({}, null as any, "/");
       })
       .catch(() => {
-        window.location = "/";
+        window.location = "/" as any;
       });
   }, [code]);
 
@@ -35,7 +36,7 @@ export default function useAuth(code) {
           setExpiresIn(res.data.expiresIn);
         })
         .catch(() => {
-          window.location = "/";
+          window.location = "/" as any;
         });
     }, (expiresIn - 60) * 1000);
 
