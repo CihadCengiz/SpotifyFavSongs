@@ -6,6 +6,8 @@
     "strict": true,
     "allowJs": true,
     "baseUrl": ".",
-    "outDir": "dist"
+    "outDir": "dist",
+    "noImplicitAny": false,
+    "esModuleInterop": true
   }
 }

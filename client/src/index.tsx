@@ -5,6 +5,7 @@ import { render } from "react-dom";
 import { createGlobalStyle } from "styled-components";
 import graphqlClient from "./api/graphql";
 import Root from "./components/Root";
+import App from "./App";
 
 const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
@@ -15,9 +16,12 @@ const GlobalStyle = createGlobalStyle`
 
 render(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  <ApolloProvider client={graphqlClient as any}>
-    <GlobalStyle />
-    <Root />
-  </ApolloProvider>,
+  // <ApolloProvider client={graphqlClient as any}>
+  //   <GlobalStyle />
+  //   <Root />
+  // </ApolloProvider>,
+  <React.StrictMode>
+  <App />
+</React.StrictMode>,
   document.getElementById("app")
 );
