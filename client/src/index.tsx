@@ -6,6 +6,7 @@ import { createGlobalStyle } from "styled-components";
 import graphqlClient from "./api/graphql";
 import Root from "./components/Root";
 import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 
 const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap');
@@ -21,7 +22,9 @@ render(
   //   <Root />
   // </ApolloProvider>,
   <React.StrictMode>
-  <App />
-</React.StrictMode>,
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>,
   document.getElementById("app")
 );
